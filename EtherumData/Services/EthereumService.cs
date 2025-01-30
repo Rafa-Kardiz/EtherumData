@@ -1,5 +1,6 @@
 ﻿using EtherumData.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Numerics;
@@ -22,7 +23,17 @@ namespace EtherumData.Services
         {
             try
             {
-                //Se crea el json para la transaccion 
+                // se verifica si existe en base de datos la transacción
+                var transactionConsult = await _context.Transactions
+                    .FirstOrDefaultAsync(t => t.Id == hash);
+
+                // en caso de existir la transacción se muestra este resultado al usuario 
+                if (transactionConsult != null)
+                {
+                    return (transactionConsult, null);
+                }
+
+                //Se crea el json para la busqueda de la transaccion 
                 string jsonRequest = $"{{ \"jsonrpc\": \"2.0\", \"method\": \"eth_getTransactionByHash\", \"params\": [\"{hash}\"], \"id\": 1 }}";
 
                 // Realizamos el llamado al endpoint de etherum
