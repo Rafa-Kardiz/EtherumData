@@ -1,12 +1,31 @@
 using EtherumData.Models;
 using EtherumData.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// se agrega la configuración para el jwt
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
+
 // se añade la conexion a a mysql
 builder.Services.AddDbContext<EthereumDataContext>(options =>
 {
@@ -14,7 +33,7 @@ builder.Services.AddDbContext<EthereumDataContext>(options =>
         new MySqlServerVersion(new Version(10, 4, 32))
         );
 });
-
+// se agregan los servicios que se utilizaran 
 builder.Services.AddScoped<EthereumService>();
 
 var app = builder.Build();

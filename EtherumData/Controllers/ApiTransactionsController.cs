@@ -1,4 +1,5 @@
 ﻿using EtherumData.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ namespace EtherumData.Controllers
 {
     [Route("api/transactions")]
     [ApiController]
+    [Authorize]
     public class ApiTransactionsController : ControllerBase
     {
         private readonly EthereumDataContext _context;
