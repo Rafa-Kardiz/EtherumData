@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "d06e45b2-ba96-4c3c-b44f-366d610bfebc",
+		"name": "Pruebas etherum data api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9206510"
+	},
+	"item": [
+		{
+			"name": "Obtener información de una transacción de ethereum",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"jsonrpc\": \"2.0\",\r\n  \"method\": \"eth_getTransactionByHash\",\r\n  \"params\": [\"0xf4d16b2c939853b8b486c0de06efb5114de2c08cba63940cf926683244b8800b\"],\r\n  \"id\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sepolia.gateway.tenderly.co/",
+					"protocol": "https",
+					"host": [
+						"sepolia",
+						"gateway",
+						"tenderly",
+						"co"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener el listado de  transacciones de ethereum",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"jsonrpc\": \"2.0\",\r\n  \"method\": \"eth_getBlockByNumber\",\r\n  \"params\": [\"latest\", true],\r\n  \"id\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sepolia.gateway.tenderly.co/",
+					"protocol": "https",
+					"host": [
+						"sepolia",
+						"gateway",
+						"tenderly",
+						"co"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener el listado de transacciones de la base de datos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTczODE5ODc1OCwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.hHhBFozVFuPaZgWKUm26LmmeyErt4UnpCUXlfTg61xg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7056/api/transactions",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7056",
+					"path": [
+						"api",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener una transacción mediante un hash",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7056/api/transaction/0x9c1d06829aa0fa9e94c3e915ce8081498984460e5d8faef84b4d58c9ce1a86fe",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7056",
+					"path": [
+						"api",
+						"transaction",
+						"0x9c1d06829aa0fa9e94c3e915ce8081498984460e5d8faef84b4d58c9ce1a86fe"
+					]
+				},
+				"description": "Este endpoint obtiene una transacción mediante un hash, primero la busca en la base de datos, en caso de encontrarla se mostrará esa información, en caso contrario verifica la información vía el nodo de Ethereum y si obtiene un resultado positivo lo guarda en base de datos"
+			},
+			"response": []
+		},
+		{
+			"name": "Api auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"User\": \"admin\",\r\n    \"Password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7056/api/auth/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7056",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Api para la autenticación y genera un JWT para la seguridad de los endpoints\n\npara la prueba es necesario usar un json con la siguiente estructura y datos\n\nStartFragmentjson\n\n```\n{\n    \"User\": \"admin\",\n    \"Password\": \"admin\"\n}\n\n ```\n\nEndFragment"
+			},
+			"response": []
+		}
+	]
+}
